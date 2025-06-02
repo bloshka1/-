@@ -1,0 +1,34 @@
+ ∏_(n=2)^(∞)(n^3 - 1)/(n^3 + 1)
+ #include <iostream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    const double EPS = 1e-6;
+    double product = 1.0;
+    int n = 2;
+
+    while (true) {
+        double numerator = std::pow(n, 3) - 1;
+        double denominator = std::pow(n, 3) + 1;
+        double term = numerator / denominator;
+
+        product *= term;
+
+        // Если отклонение от 1 в текущем множителе меньше EPS, считаем, что дальше влияние пренебрежимо
+        if (std::abs(term - 1.0) < EPS) {
+            break;
+        }
+        ++n;
+
+        if (n > 1000000) { // Защита от бесконечного цикла
+            std::cout << "Произведение не сошлось за 1,000,000 итераций." << std::endl;
+            break;
+        }
+    }
+
+    std::cout << std::fixed << std::setprecision(8);
+    std::cout << "Численное значение произведения: " << product << std::endl;
+
+    return 0;
+}
