@@ -1,0 +1,43 @@
+ ∑_(n=0)^(∞)((x+8)^n)/((n+1)6^n)
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    const double EPS = 1e-6;
+    double x;
+
+    std::cout << "Введите значение x (для сходимости: -14 < x < -2): ";
+    std::cin >> x;
+
+    if (std::abs(x + 8) >= 6) {
+        std::cout << "Ряд расходится при данном x." << std::endl;
+        return 1;
+    }
+
+    double sum = 0.0;
+    int n = 0;
+
+    while (true) {
+        double term = std::pow(x + 8, n) / ((n + 1) * std::pow(6, n));
+        sum += term;
+
+        if (std::abs(term) < EPS) {
+            break;
+        }
+
+        if (n > 1000000) {
+            std::cout << "Сумма не сошлась за 1,000,000 итераций." << std::endl;
+            break;
+        }
+
+        ++n;
+    }
+
+    std::cout << std::fixed << std::setprecision(8);
+    std::cout << "Сумма ряда: " << sum << std::endl;
+    std::cout << "Радиус сходимости: 6" << std::endl;
+
+    return 0;
+}
