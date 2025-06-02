@@ -1,0 +1,48 @@
+ ∑_(n=1)^(∞)(n^3 x + n^4)/(n^3 x^3 + n^4 + 4)
+ #include <iostream>
+#include <cmath>
+#include <iomanip>
+
+// Функция для вычисления одного члена ряда при заданном n и x
+double term(int n, double x) {
+    double numerator = n*n*n * x + std::pow(n, 4);
+    double denominator = n*n*n * std::pow(x, 3) + std::pow(n, 4) + 4;
+    return numerator / denominator;
+}
+
+int main() {
+    const double EPS = 1e-6;
+    double x;
+
+    std::cout << "Введите x в диапазоне [-1; 8]: ";
+    std::cin >> x;
+
+    if (x < -1 || x > 8) {
+        std::cout << "Ошибка: x вне допустимого диапазона." << std::endl;
+        return 1;
+    }
+
+    double sum = 0.0;
+    int n = 1;
+
+    while (true) {
+        double current_term = term(n, x);
+        sum += current_term;
+
+        if (std::abs(current_term) < EPS) {
+            break;
+        }
+
+        if (n > 1000000) {
+            std::cout << "Сумма не сошлась за 1,000,000 итераций." << std::endl;
+            break;
+        }
+
+        ++n;
+    }
+
+    std::cout << std::fixed << std::setprecision(8);
+    std::cout << "Сумма ряда: " << sum << std::endl;
+
+    return 0;
+}
